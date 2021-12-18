@@ -1,5 +1,6 @@
 {
   "miniprogramRoot": "dist/",
+  "cloudfunctionRoot": "cloud/functions/",
   "projectname": "FlashcardMiniProgram",
   "description": "",
   "appid": "wx4ff360fb43b30d0c",
@@ -41,5 +42,6 @@
     "useCompilerPlugins": false
   },
   "compileType": "miniprogram",
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
   "condition": {}
 }
