@@ -1,5 +1,5 @@
 {
-	"name": "FlashcardMiniProgram",
+	"name": "Demo",
 	"version": "1.0.0",
 	"private": true,
 	"description": "",
@@ -36,31 +36,26 @@
 	"dependencies": {
 		"@babel/runtime": "^7.7.7",
 		"@nutui/nutui-taro": "^3.1.8",
-		"@tarojs/components": "3.3.16",
-		"@tarojs/plugin-html": "3.3.16",
-		"@tarojs/runtime": "3.3.16",
-		"@tarojs/taro": "3.3.16",
-		"moment": "^2.29.1",
-		"supermemo2": "^1.1.0",
-		"vconsole": "^3.9.5",
+		"@tarojs/components": "~3.4.0-beta.0",
+		"@tarojs/plugin-html": "~3.4.0-beta.0",
+		"@tarojs/runtime": "~3.4.0-beta.0",
+		"@tarojs/taro": "~3.4.0-beta.0",
 		"vue": "^3.0.0",
-		"vue-vconsole-devtools": "^1.0.5",
 		"vuex": "^4.0.2"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.8.0",
-		"@tarojs/cli": "3.3.16",
-		"@tarojs/mini-runner": "^3.3.16",
-		"@tarojs/webpack-runner": "3.3.16",
 		"@types/webpack-env": "^1.13.6",
-		"@vue/compiler-sfc": "^3.0.0",
+		"@tarojs/mini-runner": "~3.4.0-beta.0",
+		"@tarojs/webpack-runner": "~3.4.0-beta.0",
+		"@babel/core": "^7.8.0",
+		"@tarojs/cli": "~3.4.0-beta.0",
+		"babel-preset-taro": "~3.4.0-beta.0",
 		"babel-plugin-import": "^1.13.3",
-		"babel-preset-taro": "3.3.16",
-		"eslint": "^6.8.0",
-		"eslint-config-taro": "3.3.16",
-		"eslint-plugin-vue": "^7.0.0",
-		"stylelint": "9.3.0",
+		"@vue/compiler-sfc": "^3.0.0",
 		"vue-loader": "^16.0.0-beta.8",
-		"webpack-bundle-analyzer": "^4.5.0"
+		"eslint-plugin-vue": "^7.0.0",
+		"eslint-config-taro": "~3.4.0-beta.0",
+		"eslint": "^6.8.0",
+		"stylelint": "9.3.0"
 	}
 }
