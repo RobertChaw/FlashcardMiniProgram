@@ -6,28 +6,41 @@ export const INSERT_COL_ASYNC = 'INSERT_COL_ASYNC'
 export const INSERT_COL = 'INSERT_COL'
 export const DELETE_COL_ASYNC = 'DELETE_COL_ASYNC'
 export const DELETE_COL = 'DELETE_COL'
+export const UPDATE_COLL_FORM = 'UPDATE_COLL_FORM'
 import db from '../../utils/db'
 
 
 const state = {
     colItems: [],
+    form: {
+        type: 'insert',
+        coll: {}
+    }
 }
 const getters = {}
 const actions = {
     async [REQUEST_COL_LIST_ASYNC]({commit}) {
         await db.collection('collections').get({
             success: ({data, state}) => {
-                console.log(state, data)
+                //清除不必要的属性
+                for (let i = 0; i < data.length; i++) {
+                    delete data[i]._openid
+                }
+
                 commit(UPDATE_COL_LIST, data)
             },
             fail: console.error
         })
     },
     async [UPDATE_COL_ASYNC]({commit}, col) {
+        //浅拷贝对象
+        const cloneCol = {...col}
+        delete cloneCol._id
+
         await db.collection('collections').doc(col._id).update({
-            data: col,
+            data: cloneCol,
             success: ({state}) => {
-                console.log(state)
+                // console.log(state)
                 commit(UPDATE_COL, col)
             },
             fail: console.error
@@ -37,7 +50,7 @@ const actions = {
         await db.collection('collections').add({
             data: col,
             success: ({_id, state}) => {
-                console.log(state)
+                // console.log(state)
                 col._id = _id
                 commit(INSERT_COL, col)
             },
@@ -47,7 +60,7 @@ const actions = {
     async [DELETE_COL_ASYNC]({commit}, {_id}) {
         await db.collection('collections').doc(_id).remove({
             success: ({state}) => {
-                console.log(state)
+                // console.log(state)
                 commit(DELETE_COL, {_id})
             },
             fail: console.error
@@ -57,7 +70,7 @@ const actions = {
 
 const mutations = {
     [UPDATE_COL_LIST](state, list) {
-        console.log(state)
+        // console.log(list)
         state.colItems = list
     },
     [UPDATE_COL](state, col) {
@@ -79,6 +92,10 @@ const mutations = {
             }
         }
     },
+    [UPDATE_COLL_FORM](state, {type, coll}) {
+        state.form.type = type
+        state.form.coll = (coll ? coll : {})
+    }
 }
 
 export default {

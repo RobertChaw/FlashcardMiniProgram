@@ -1,13 +1,23 @@
 <template>
-
+    <nut-cell-group>
+        <card-item v-for="card in cards" :card="card"></card-item>
+    </nut-cell-group>
+    <management-drop-down ref="dropdown"></management-drop-down>
 </template>
 
-<script>
-export default {
-  name: "CardList"
-}
+<script setup>
+import ManagementDropDown from "../../components/ManagementDropDown";
+import CardItem from "./CardItem";
+import {ref, provide} from 'vue';
+
+const props = defineProps({
+    cards: Array
+})
+const dropdown = ref(null)
+provide('dropdown', dropdown)
+
 </script>
 
-<style scoped>
+<style>
 
 </style>

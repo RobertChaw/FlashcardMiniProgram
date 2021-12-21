@@ -1,4 +1,4 @@
-import {createStore} from 'vuex'
+import {createStore, createLogger} from 'vuex'
 
 import card from '../components/card/module'
 import collection from '../components/collection/module'
@@ -21,7 +21,8 @@ const store = createStore({
         card,
         collection,
         reviewLog
-    }
+    },
+    plugins: [createLogger()]
 })
 
 export default store

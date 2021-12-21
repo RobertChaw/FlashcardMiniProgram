@@ -1,58 +1,25 @@
 <template>
-  <view class="index">
-    <view>
-      <img src="" alt="">
+    <view class="index">
+        <collection-list></collection-list>
     </view>
-    {{ msg }}
-    <view class="btn">
-      <nut-button type="primary" @click="handleClick('text', msg2, true)">点我</nut-button>
-    </view>
-    <nut-toast :msg="msg" v-model:visible="show" :type="type" :cover="cover"/>
-    <tab-bar></tab-bar>
-  </view>
-
-  <!--  <tab-bar></tab-bar>-->
+    <fixed-nav></fixed-nav>
 </template>
 
-<script>
-import {reactive, toRefs} from 'vue';
-import TabBar from "../../components/TabBar";
+<script setup>
+import {reactive, toRefs, computed, onMounted, ref} from 'vue';
+import FixedNav from "../../components/FixedNav";
+import CollectionList from "../../components/collection/CollectionList";
+import CardList from "../../components/card/CardList";
+import Taro, {eventCenter, getCurrentInstance} from '@tarojs/taro'
+import {useStore} from 'vuex'
 
-export default {
-  name: 'Index',
-  components: {
-    TabBar
-
-  },
-  setup() {
-    const state = reactive({
-      msg: '欢迎使用 NutUI3.0 开发小程序',
-      msg2: '你成功了～',
-      type: 'text',
-      show: false,
-      cover: false
-    });
-
-    const handleClick = (type, msg, cover = false) => {
-      state.show = true;
-      state.msg2 = msg;
-      state.type = type;
-      state.cover = cover;
-    };
-
-    return {
-      ...toRefs(state),
-      handleClick
-    }
-  }
-}
 </script>
 
 <style lang="scss">
 .index {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    //text-align: center;
 }
 </style>

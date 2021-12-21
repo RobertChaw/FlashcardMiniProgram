@@ -7,21 +7,29 @@ export const INSERT_CARD_ASYNC = 'INSERT_CARD_ASYNC'
 export const INSERT_CARD = 'INSERT_CARD'
 export const DELETE_CARD_ASYNC = 'DELETE_CARD_ASYNC'
 export const DELETE_CARD = 'DELETE_CARD'
+export const UPDATE_CARD_FORM = 'UPDATE_CARD_FORM'
 import db from '../../utils/db'
 import supermemo2 from '../../utils/supermemo2'
 import {INSERT_REVLOG_ASYNC} from "../reviewLog/module";
 import util from "../../utils/util";
 
-
 const state = {
-    cardItems: []
+    cardItems: [],
+    form: {
+        type: 'insert',
+        card: {}
+    }
 }
 const getters = {}
 const actions = {
     async [REQUEST_CARD_LIST_ASYNC]({commit}) {
         await db.collection('cards').get({
             success: ({data, state}) => {
-                console.log(state, data)
+                //清除不必要的属性
+                for (let i = 0; i < data.length; i++) {
+                    delete data[i]._openid
+                }
+
                 commit(UPDATE_CARD_LIST, data)
             },
             fail: console.error
@@ -36,6 +44,7 @@ const actions = {
             schedule,
             queue: (!isRepeatAgain ? 0 : 1)  //0 = 学习，1 = 重新学习
         }
+
         if (!isRepeatAgain)
             newCard.due = util.addDays(card.due, schedule)
         const task1 = dispatch(UPDATE_CARD_ASYNC, newCard)
@@ -44,19 +53,22 @@ const actions = {
         const log = {
             card_id: card.id,
             interval: card.interval,
-            last_interval: newCard.schedule,
+            last_interval: schedule,
             factor: card.factor,
             quality: quality,
             usn: new Date(),
         }
-        log.last_interval = schedule
+
         const task2 = dispatch(INSERT_REVLOG_ASYNC, log)
 
         await Promise.all([task1, task2])
     },
     async [UPDATE_CARD_ASYNC]({commit}, card) {
+        //浅拷贝对象
+        const cloneCard = {...card}
+        delete cloneCard._id
         await db.collection('cards').doc(card._id).update({
-            data: card,
+            data: cloneCard,
             success: ({state}) => {
                 console.log(state)
                 commit(UPDATE_CARD, card)
@@ -65,6 +77,15 @@ const actions = {
         })
     },
     async [INSERT_CARD_ASYNC]({commit}, card) {
+        //为卡片添加默认字段
+        card = {
+            collection_id: card.collection_id,
+            question: card.question,
+            answer: card.answer,
+            interval: 1,
+            factor: 2.5,
+            due: new Date(),
+        }
         await db.collection('cards').add({
             data: card,
             success: ({_id, state}) => {
@@ -87,6 +108,7 @@ const actions = {
 }
 const mutations = {
     [UPDATE_CARD_LIST](state, list) {
+        // console.log(list)
         state.cardItems = list
     },
     [UPDATE_CARD](state, card) {
@@ -108,6 +130,10 @@ const mutations = {
             }
         }
     },
+    [UPDATE_CARD_FORM](state, {type, card}) {
+        state.form.type = type
+        state.form.card = (card ? card : {})
+    }
 }
 
 export default {
