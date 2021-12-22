@@ -6,7 +6,9 @@ export const INSERT_COL_ASYNC = 'INSERT_COL_ASYNC'
 export const INSERT_COL = 'INSERT_COL'
 export const DELETE_COL_ASYNC = 'DELETE_COL_ASYNC'
 export const DELETE_COL = 'DELETE_COL'
-export const UPDATE_COLL_FORM = 'UPDATE_COLL_FORM'
+export const UPDATE_COL_FORM = 'UPDATE_COL_FORM'
+export const UPDATE_REV_PAGE = 'UPDATE_REV_PAGE'
+
 import db from '../../utils/db'
 
 
@@ -14,7 +16,10 @@ const state = {
     colItems: [],
     form: {
         type: 'insert',
-        coll: {}
+        col: {}
+    },
+    reviewPage: {
+        col: {}
     }
 }
 const getters = {}
@@ -92,9 +97,12 @@ const mutations = {
             }
         }
     },
-    [UPDATE_COLL_FORM](state, {type, coll}) {
+    [UPDATE_COL_FORM](state, {type, col}) {
         state.form.type = type
-        state.form.coll = (coll ? coll : {})
+        state.form.col = (col ? col : {})
+    },
+    [UPDATE_REV_PAGE](state, {col}) {
+        state.reviewPage.col = col
     }
 }
 

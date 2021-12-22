@@ -18,7 +18,7 @@ const state = {
     form: {
         type: 'insert',
         card: {}
-    }
+    },
 }
 const getters = {}
 const actions = {
@@ -38,16 +38,19 @@ const actions = {
     async [REVIEW_CARD_ASYNC]({commit, dispatch}, {quality, card}) {
         //更新卡片
         const {factor, schedule, isRepeatAgain} = supermemo2(quality, card.interval, card.factor)
+        const usn = new Date()
         const newCard = {
             ...card,
             factor,
             schedule,
-            queue: (!isRepeatAgain ? 0 : 1)  //0 = 学习，1 = 重新学习
+            usn,
+            // queue: (!isRepeatAgain ? 0 : 1)  //0 = 学习，1 = 重新学习
         }
-
         if (!isRepeatAgain)
-            newCard.due = util.addDays(card.due, schedule)
-        const task1 = dispatch(UPDATE_CARD_ASYNC, newCard)
+            newCard.due = util.addDays(new Date(), schedule)
+        console.log(card)
+        console.log(newCard)
+        const task1 = dispatch(UPDATE_CARD_ASYNC, {card: newCard})
 
         //添加复习记录
         const log = {
@@ -63,7 +66,8 @@ const actions = {
 
         await Promise.all([task1, task2])
     },
-    async [UPDATE_CARD_ASYNC]({commit}, card) {
+    async [UPDATE_CARD_ASYNC]({commit}, {card}) {
+        console.log(card)
         //浅拷贝对象
         const cloneCard = {...card}
         delete cloneCard._id
@@ -85,6 +89,7 @@ const actions = {
             interval: 1,
             factor: 2.5,
             due: new Date(),
+            usn: new Date(),
         }
         await db.collection('cards').add({
             data: card,

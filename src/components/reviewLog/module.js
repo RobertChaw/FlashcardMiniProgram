@@ -12,7 +12,11 @@ const actions = {
     async [REQUEST_REVLOG_LIST_ASYNC]({commit}) {
         await db.collection('rev_logs').get({
             success: ({data, state}) => {
-                console.log(state, data)
+                //清除不必要的属性
+                for (let i = 0; i < data.length; i++) {
+                    delete data[i]._openid
+                }
+                // console.log(state, data)
                 commit(UPDATE_REVLOG_LIST, data)
             },
             fail: console.error
@@ -22,7 +26,7 @@ const actions = {
         await db.collection('rev_logs').add({
             data: log,
             success: ({_id, state}) => {
-                console.log(state)
+                // console.log(state)
                 log._id = _id
                 commit(INSERT_REVLOG, log)
             },
