@@ -31,19 +31,19 @@ const store = useStore()
 const props = defineProps({
     type: String,
     card: Object,
-
 })
 
 const form = reactive({...props.card})
 
 const selector = computed(() => store.state.collection.colItems)
 const selected = ref('0')
+
 switch (props.type) {
     case 'insert':
         form.collection_id = selector.value[0]._id
         break
     case 'update':
-        for (let i = 0; i < selector.length; i++) {
+        for (let i = 0; i < selector.value.length; i++) {
             if (selector.value[i]._id == form.collection_id) {
                 selected.value = i
                 break
