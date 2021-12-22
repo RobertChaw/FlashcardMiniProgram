@@ -80,7 +80,7 @@ const actions = {
             fail: console.error
         })
     },
-    async [INSERT_CARD_ASYNC]({commit}, card) {
+    async [INSERT_CARD_ASYNC]({commit}, {card}) {
         //为卡片添加默认字段
         card = {
             collection_id: card.collection_id,

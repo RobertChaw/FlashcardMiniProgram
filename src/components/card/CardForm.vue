@@ -61,10 +61,10 @@ const changePicker = (event) => {
 const submit = () => {
     switch (props.type) {
         case 'insert':
-            store.dispatch(INSERT_CARD_ASYNC, form)
+            store.dispatch(INSERT_CARD_ASYNC, {card: form})
             break
         case 'update':
-            store.dispatch(UPDATE_CARD_ASYNC, form)
+            store.dispatch(UPDATE_CARD_ASYNC, {card: form})
             break
     }
     Taro.navigateBack({detail: 1})
