@@ -22,7 +22,7 @@ const props = defineProps({
 const dropdown = inject('dropdown')
 
 function navToReviewPage(e) {
-    if (props.remains == 0)
+    if (!props.remains || props.remains < 1)
         return;
     console.log(e, '跳到复习页面')
     store.commit(UPDATE_REV_PAGE, {col: props.collection})

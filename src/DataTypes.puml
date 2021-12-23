@@ -1,0 +1,33 @@
+@startuml
+'https://plantuml.com/object-diagram
+
+object collections{
+_id
+name
+usn
+}
+object cards{
+_id
+collection_id
+question
+answer
+interval
+factor
+due
+usn
+}
+object review_logs{
+_id
+card_id
+interval
+last_interval
+factor
+quality
+usn
+}
+
+
+
+
+
+@enduml
