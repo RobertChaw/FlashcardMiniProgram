@@ -23,17 +23,16 @@ const state = {
 const getters = {}
 const actions = {
     async [REQUEST_CARD_LIST_ASYNC]({commit}) {
-        await db.collection('cards').get({
-            success: ({data, state}) => {
-                //清除不必要的属性
-                for (let i = 0; i < data.length; i++) {
-                    delete data[i]._openid
-                }
-
-                commit(UPDATE_CARD_LIST, data)
-            },
-            fail: console.error
-        })
+        try {
+            const {result} = await wx.cloud.callFunction({
+                name: 'queryCardList'
+            })
+            const cardList = result.cardList
+            console.log(result)
+            commit(UPDATE_CARD_LIST, cardList)
+        } catch (e) {
+            console.warn(e)
+        }
     },
     async [REVIEW_CARD_ASYNC]({commit, dispatch}, {quality, card}) {
         //更新卡片

@@ -10,17 +10,15 @@ const state = {
 const getters = {}
 const actions = {
     async [REQUEST_REVLOG_LIST_ASYNC]({commit}) {
-        await db.collection('rev_logs').get({
-            success: ({data, state}) => {
-                //清除不必要的属性
-                for (let i = 0; i < data.length; i++) {
-                    delete data[i]._openid
-                }
-                // console.log(state, data)
-                commit(UPDATE_REVLOG_LIST, data)
-            },
-            fail: console.error
-        })
+        try {
+            const {result} = await wx.cloud.callFunction({
+                name: 'queryRevLogList'
+            })
+            const revLogList = result.revLogList
+            commit(UPDATE_REVLOG_LIST, revLogList)
+        } catch (e) {
+            console.warn(e)
+        }
     },
     async [INSERT_REVLOG_ASYNC]({commit}, log) {
         await db.collection('rev_logs').add({

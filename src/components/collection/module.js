@@ -13,62 +13,50 @@ import db from '../../utils/db'
 
 
 const state = {
-    colItems: [],
-    form: {
-        type: 'insert',
-        col: {}
-    },
-    reviewPage: {
+    colItems: [], form: {
+        type: 'insert', col: {}
+    }, reviewPage: {
         col: {}
     }
 }
 const getters = {}
 const actions = {
     async [REQUEST_COL_LIST_ASYNC]({commit}) {
-        await db.collection('collections').get({
-            success: ({data, state}) => {
-                //清除不必要的属性
-                for (let i = 0; i < data.length; i++) {
-                    delete data[i]._openid
-                }
-
-                commit(UPDATE_COL_LIST, data)
-            },
-            fail: console.error
-        })
+        try {
+            const {result} = await wx.cloud.callFunction({
+                name: 'queryColList'
+            })
+            const colList = result.colList
+            commit(UPDATE_COL_LIST, colList)
+        } catch (e) {
+            console.warn(e)
+        }
     },
     async [UPDATE_COL_ASYNC]({commit}, col) {
         //浅拷贝对象
         const cloneCol = {...col}
         delete cloneCol._id
 
-        await db.collection('collections').doc(col._id).update({
-            data: cloneCol,
-            success: ({state}) => {
+        db.collection('collections').doc(col._id).update({
+            data: cloneCol, success: ({state}) => {
                 // console.log(state)
                 commit(UPDATE_COL, col)
-            },
-            fail: console.error
+            }, fail: console.error
         })
-    },
-    async [INSERT_COL_ASYNC]({commit}, col) {
-        await db.collection('collections').add({
-            data: col,
-            success: ({_id, state}) => {
+    }, async [INSERT_COL_ASYNC]({commit}, col) {
+        db.collection('collections').add({
+            data: col, success: ({_id, state}) => {
                 // console.log(state)
                 col._id = _id
                 commit(INSERT_COL, col)
-            },
-            fail: console.error
+            }, fail: console.error
         })
-    },
-    async [DELETE_COL_ASYNC]({commit}, {_id}) {
-        await db.collection('collections').doc(_id).remove({
+    }, async [DELETE_COL_ASYNC]({commit}, {_id}) {
+        db.collection('collections').doc(_id).remove({
             success: ({state}) => {
                 // console.log(state)
                 commit(DELETE_COL, {_id})
-            },
-            fail: console.error
+            }, fail: console.error
         })
     }
 }
@@ -107,8 +95,5 @@ const mutations = {
 }
 
 export default {
-    state,
-    getters,
-    actions,
-    mutations
+    state, getters, actions, mutations
 }
