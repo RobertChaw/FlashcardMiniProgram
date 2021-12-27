@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import CardForm from "../../../components/card/CardForm";
+import CardForm from "../../../components/card/Form";
 import Taro, {eventCenter} from '@tarojs/taro'
 import {computed, onMounted, reactive, ref} from "vue";
 import {useStore} from "vuex";

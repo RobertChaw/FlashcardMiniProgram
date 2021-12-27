@@ -7,11 +7,12 @@
 </template>
 
 <script setup>
-import CollectionItem from './CollectionItem'
+import CollectionItem from './Item'
 import ManagementDropDown from "../../components/ManagementDropDown";
 import {ref, provide, computed} from 'vue';
 import {useStore} from 'vuex';
 import {REQUEST_COL_LIST_ASYNC} from "./module";
+import util from "../../utils/util";
 
 const dropdown = ref(null)
 provide('dropdown', dropdown)
@@ -26,11 +27,14 @@ const collectionList = computed(() => {
 const remainsOfCollList = computed(() => {
     const cards = store.state.card.cardItems
     return cards.reduce((() => {
-        const now = new Date()
+        const now = util.now()
         return (count, card) => {
             let index = card.collection_id
             if (count[index] == undefined)
                 count[index] = 0
+
+            // console.log(`card:${format.format(card.due)} ${card.due > now ? '>' : '<'} now:${format.format(now)}`)
+            console.warn(typeof card.due)
             if (now > card.due)
                 count[index]++
             return count

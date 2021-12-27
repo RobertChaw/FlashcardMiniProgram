@@ -7,6 +7,14 @@ export default {
         'pages/card/review/index',
         'pages/collection/edit/index',
     ],
+    // "subpackages": [
+    //     {
+    //         "root": "",
+    //         "pages": [
+    //
+    //         ]
+    //     }
+    // ],
     window: {
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#fff',
@@ -19,7 +27,6 @@ export default {
         // "backgroundColor": "#000000",
         "list": [{
             "pagePath": 'pages/index/index',
-
             "text": "首页"
         }, {
             "pagePath": 'pages/cardExplorer/index',

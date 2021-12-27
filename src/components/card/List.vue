@@ -7,7 +7,7 @@
 
 <script setup>
 import ManagementDropDown from "../../components/ManagementDropDown";
-import CardItem from "./CardItem";
+import CardItem from "./Item";
 import {ref, provide} from 'vue';
 
 const props = defineProps({

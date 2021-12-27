@@ -37,7 +37,7 @@ const actions = {
     async [REVIEW_CARD_ASYNC]({commit, dispatch}, {quality, card}) {
         //更新卡片
         const {factor, schedule, isRepeatAgain} = supermemo2(quality, card.interval, card.factor)
-        const usn = new Date()
+        const usn = util.now()
         const newCard = {
             ...card,
             factor,
@@ -46,19 +46,18 @@ const actions = {
             // queue: (!isRepeatAgain ? 0 : 1)  //0 = 学习，1 = 重新学习
         }
         if (!isRepeatAgain)
-            newCard.due = util.addDays(new Date(), schedule)
-        console.log(card)
-        console.log(newCard)
+            newCard.due = util.addDays(util.now(), schedule)
+
         const task1 = dispatch(UPDATE_CARD_ASYNC, {card: newCard})
 
         //添加复习记录
         const log = {
-            card_id: card.id,
+            card_id: card._id,
             interval: card.interval,
             last_interval: schedule,
             factor: card.factor,
             quality: quality,
-            usn: new Date(),
+            usn: util.now(),
         }
 
         const task2 = dispatch(INSERT_REVLOG_ASYNC, log)
@@ -70,7 +69,7 @@ const actions = {
         //浅拷贝对象
         const cloneCard = {...card}
         delete cloneCard._id
-        await db.collection('cards').doc(card._id).update({
+        db.collection('cards').doc(card._id).update({
             data: cloneCard,
             success: ({state}) => {
                 console.log(state)
@@ -87,10 +86,10 @@ const actions = {
             answer: card.answer,
             interval: 1,
             factor: 2.5,
-            due: new Date(),
-            usn: new Date(),
+            due: util.now(),
+            usn: util.now(),
         }
-        await db.collection('cards').add({
+        db.collection('cards').add({
             data: card,
             success: ({_id, state}) => {
                 console.log(state)
@@ -101,7 +100,7 @@ const actions = {
         })
     },
     async [DELETE_CARD_ASYNC]({commit}, {_id}) {
-        await db.collection('cards').doc(_id).remove({
+        db.collection('cards').doc(_id).remove({
             success: ({state}) => {
                 console.log(state)
                 commit(DELETE_CARD, {_id})

@@ -26,8 +26,11 @@ const actions = {
             const {result} = await wx.cloud.callFunction({
                 name: 'queryColList'
             })
+
             const colList = result.colList
+
             commit(UPDATE_COL_LIST, colList)
+
         } catch (e) {
             console.warn(e)
         }

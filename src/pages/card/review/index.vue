@@ -40,6 +40,7 @@ import {reactive, toRefs, computed, watch, watchEffect} from 'vue';
 import {useStore} from "vuex";
 import {navigateBack} from "@tarojs/taro";
 import {REVIEW_CARD_ASYNC} from "../../../components/card/module";
+import util from "../../../utils/util";
 
 const store = useStore()
 const state = reactive({
@@ -49,24 +50,30 @@ const state = reactive({
 const curColl = computed(() => store.state.collection.reviewPage.col)
 const dueCardList = computed(() => {
     const cardList = store.state.card.cardItems
-    const now = new Date()
+    const now = util.now()
     const filteredList = cardList.reduce((list, card) => {
+
         if (card.collection_id != curColl.value._id)
             return list
-        if (card.due > now)
+
+        if (now < card.due)
             return list
+
         list.push(card)
         return list
     }, [])
+
     console.log(filteredList)
+
     const sortedList = filteredList.sort((a, b) => {
-            return a.usn - b.usn
+        return b.usn - a.usn
         }
     )
     return sortedList
 })
 
 const curCard = computed(() => dueCardList.value.pop())
+
 const remains = computed(() => dueCardList.value.length)
 
 watchEffect(() => {
@@ -89,8 +96,6 @@ const qualityConfirm = function () {
             return;
         isProcess = true
         const quality = e.target.dataset.quality
-        console.log('已选按钮：', quality)
-        console.log(curCard.value)
         await store.dispatch(REVIEW_CARD_ASYNC, {quality, card: curCard.value})
         isProcess = false
         hideAnswer()

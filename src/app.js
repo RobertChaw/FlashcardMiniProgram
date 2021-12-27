@@ -25,6 +25,7 @@ import './app.scss'
 import Taro from '@tarojs/taro'
 import {REQUEST_COL_LIST_ASYNC} from "./components/collection/module";
 import {REQUEST_CARD_LIST_ASYNC} from "./components/card/module";
+import {REQUEST_REVLOG_LIST_ASYNC} from "./components/reviewLog/module";
 
 
 const App = createApp({
@@ -32,6 +33,7 @@ const App = createApp({
         const store = this.$store
         store.dispatch(REQUEST_COL_LIST_ASYNC)
         store.dispatch(REQUEST_CARD_LIST_ASYNC)
+        store.dispatch(REQUEST_REVLOG_LIST_ASYNC)
     },
     // 入口组件不需要实现 render 方法，即使实现了也会被 taro 所覆盖
 })

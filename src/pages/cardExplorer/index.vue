@@ -32,7 +32,7 @@
 <script setup>
 import {reactive, toRefs, computed, ref, watchEffect, watch} from 'vue';
 import FixedNav from "../../components/FixedNav";
-import CardList from "../../components/card/CardList";
+import CardList from "../../components/card/List";
 import {useStore} from 'vuex'
 
 const store = useStore()
@@ -54,6 +54,7 @@ const cards = computed(() => {
     const filteredCardList = cardList.filter(card => {
         if (card.collection_id != selectedId)
             return false
+        console.log(card)
         return card.question.includes(keyword) || card.answer.includes(keyword)
     })
     return filteredCardList

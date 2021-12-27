@@ -8,8 +8,8 @@
 <script setup>
 import {reactive, toRefs, computed, onMounted, ref} from 'vue';
 import FixedNav from "../../components/FixedNav";
-import CollectionList from "../../components/collection/CollectionList";
-import CardList from "../../components/card/CardList";
+import CollectionList from "../../components/collection/List";
+import CardList from "../../components/card/List";
 import Taro, {eventCenter, getCurrentInstance} from '@tarojs/taro'
 import {useStore} from 'vuex'
 

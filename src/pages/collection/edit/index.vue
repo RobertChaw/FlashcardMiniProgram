@@ -4,7 +4,7 @@
 </template>
 
 <script setup>
-import CollectionForm from "../../../components/collection/CollectionForm";
+import CollectionForm from "../../../components/collection/Form";
 import Taro, {eventCenter} from '@tarojs/taro'
 import {computed, onMounted, reactive, ref} from "vue";
 import {useStore} from "vuex";

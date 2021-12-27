@@ -41,7 +41,8 @@
     "@tarojs/runtime": "3.3.17",
     "@tarojs/taro": "3.3.17",
     "vue": "^3.0.0",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "wx-server-sdk": "^2.5.3"
   },
   "devDependencies": {
     "@types/webpack-env": "^1.13.6",

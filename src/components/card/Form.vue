@@ -30,7 +30,10 @@ console.log('初始化CardForm')
 const store = useStore()
 const props = defineProps({
     type: String,
-    card: Object,
+    card: {
+        type: Object,
+
+    },
 })
 
 const form = reactive({...props.card})
