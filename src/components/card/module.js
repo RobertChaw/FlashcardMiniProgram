@@ -41,7 +41,7 @@ const actions = {
         const newCard = {
             ...card,
             factor,
-            schedule,
+            interval: schedule,
             usn,
             // queue: (!isRepeatAgain ? 0 : 1)  //0 = 学习，1 = 重新学习
         }
@@ -65,18 +65,18 @@ const actions = {
         await Promise.all([task1, task2])
     },
     async [UPDATE_CARD_ASYNC]({commit}, {card}) {
-        console.log(card)
         //浅拷贝对象
         const cloneCard = {...card}
         delete cloneCard._id
-        db.collection('cards').doc(card._id).update({
-            data: cloneCard,
-            success: ({state}) => {
-                console.log(state)
-                commit(UPDATE_CARD, card)
-            },
-            fail: console.error
-        })
+
+        try {
+            await db.collection('cards').doc(card._id).update({
+                data: cloneCard
+            })
+            commit(UPDATE_CARD, card)
+        } catch (e) {
+            console.warn(e)
+        }
     },
     async [INSERT_CARD_ASYNC]({commit}, {card}) {
         //为卡片添加默认字段
@@ -89,24 +89,23 @@ const actions = {
             due: util.now(),
             usn: util.now(),
         }
-        db.collection('cards').add({
-            data: card,
-            success: ({_id, state}) => {
-                console.log(state)
-                card._id = _id
-                commit(INSERT_CARD, card)
-            },
-            fail: console.error
-        })
+        try {
+            const {_id} = await db.collection('cards').add({
+                data: card,
+            })
+            card._id = _id
+            commit(INSERT_CARD, card)
+        } catch (e) {
+            console.warn(e)
+        }
     },
     async [DELETE_CARD_ASYNC]({commit}, {_id}) {
-        db.collection('cards').doc(_id).remove({
-            success: ({state}) => {
-                console.log(state)
-                commit(DELETE_CARD, {_id})
-            },
-            fail: console.error
-        })
+        try {
+            await db.collection('cards').doc(_id).remove()
+            commit(DELETE_CARD, {_id})
+        } catch (e) {
+            console.warn(e)
+        }
     },
 }
 const mutations = {

@@ -21,15 +21,15 @@ const actions = {
         }
     },
     async [INSERT_REVLOG_ASYNC]({commit}, log) {
-        await db.collection('rev_logs').add({
-            data: log,
-            success: ({_id, state}) => {
-                // console.log(state)
-                log._id = _id
-                commit(INSERT_REVLOG, log)
-            },
-            fail: console.error
-        })
+        try {
+            const {_id} = await db.collection('rev_logs').add({
+                data: log,
+            })
+            log._id = _id
+            commit(INSERT_REVLOG, log)
+        } catch (e) {
+            console.warn(e)
+        }
     }
 }
 const mutations = {

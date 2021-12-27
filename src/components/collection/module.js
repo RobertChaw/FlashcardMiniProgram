@@ -26,11 +26,8 @@ const actions = {
             const {result} = await wx.cloud.callFunction({
                 name: 'queryColList'
             })
-
             const colList = result.colList
-
             commit(UPDATE_COL_LIST, colList)
-
         } catch (e) {
             console.warn(e)
         }
@@ -40,27 +37,33 @@ const actions = {
         const cloneCol = {...col}
         delete cloneCol._id
 
-        db.collection('collections').doc(col._id).update({
-            data: cloneCol, success: ({state}) => {
-                // console.log(state)
-                commit(UPDATE_COL, col)
-            }, fail: console.error
-        })
-    }, async [INSERT_COL_ASYNC]({commit}, col) {
-        db.collection('collections').add({
-            data: col, success: ({_id, state}) => {
-                // console.log(state)
-                col._id = _id
-                commit(INSERT_COL, col)
-            }, fail: console.error
-        })
-    }, async [DELETE_COL_ASYNC]({commit}, {_id}) {
-        db.collection('collections').doc(_id).remove({
-            success: ({state}) => {
-                // console.log(state)
-                commit(DELETE_COL, {_id})
-            }, fail: console.error
-        })
+        try {
+            await db.collection('collections').doc(col._id).update({
+                data: cloneCol
+            })
+            commit(UPDATE_COL, col)
+        } catch (e) {
+            console.warn(e)
+        }
+    },
+    async [INSERT_COL_ASYNC]({commit}, col) {
+        try {
+            const {_id} = await db.collection('collections').add({
+                data: col
+            })
+            col._id = _id
+            commit(INSERT_COL, col)
+        } catch (e) {
+            console.warn(e)
+        }
+    },
+    async [DELETE_COL_ASYNC]({commit}, {_id}) {
+        try {
+            await db.collection('collections').doc(_id).remove()
+            commit(DELETE_COL, {_id})
+        } catch (e) {
+            console.warn(e)
+        }
     }
 }
 
