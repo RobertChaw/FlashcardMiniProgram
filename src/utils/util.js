@@ -9,7 +9,24 @@ function encodeQueryData(data) {
 function addDays(date, days) {
     const result = new Date(date);
     result.setDate(result.getDate() + days);
-    return result;
+    return result.getTime();
 }
 
-export default {encodeQueryData, addDays}
+function now() {
+    return +new Date
+}
+
+function getPixelRatio() {
+    let pixelRatio = 0
+    wx.getSystemInfo({
+        success: function (res) {
+            pixelRatio = res.pixelRatio
+        },
+        fail: function () {
+            pixelRatio = 0
+        }
+    })
+    return pixelRatio
+}
+
+export default {encodeQueryData, addDays, now, getPixelRatio}
