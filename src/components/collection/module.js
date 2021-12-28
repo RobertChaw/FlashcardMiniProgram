@@ -22,48 +22,48 @@ const state = {
 const getters = {}
 const actions = {
     async [REQUEST_COL_LIST_ASYNC]({commit}) {
-        try {
-            const {result} = await wx.cloud.callFunction({
-                name: 'queryColList'
-            })
-            const colList = result.colList
-            commit(UPDATE_COL_LIST, colList)
-        } catch (e) {
-            console.warn(e)
-        }
+        // try {
+        const {result} = await wx.cloud.callFunction({
+            name: 'queryColList'
+        })
+        const colList = result.colList
+        commit(UPDATE_COL_LIST, colList)
+        // } catch (e) {
+        //     console.warn(e)
+        // }
     },
     async [UPDATE_COL_ASYNC]({commit}, col) {
         //浅拷贝对象
         const cloneCol = {...col}
         delete cloneCol._id
 
-        try {
-            await db.collection('collections').doc(col._id).update({
-                data: cloneCol
-            })
-            commit(UPDATE_COL, col)
-        } catch (e) {
-            console.warn(e)
-        }
+        // try {
+        await db.collection('collections').doc(col._id).update({
+            data: cloneCol
+        })
+        commit(UPDATE_COL, col)
+        // } catch (e) {
+        //     console.warn(e)
+        // }
     },
     async [INSERT_COL_ASYNC]({commit}, col) {
-        try {
-            const {_id} = await db.collection('collections').add({
-                data: col
-            })
-            col._id = _id
-            commit(INSERT_COL, col)
-        } catch (e) {
-            console.warn(e)
-        }
+        // try {
+        const {_id} = await db.collection('collections').add({
+            data: col
+        })
+        col._id = _id
+        commit(INSERT_COL, col)
+        // } catch (e) {
+        //     console.warn(e)
+        // }
     },
     async [DELETE_COL_ASYNC]({commit}, {_id}) {
-        try {
-            await db.collection('collections').doc(_id).remove()
-            commit(DELETE_COL, {_id})
-        } catch (e) {
-            console.warn(e)
-        }
+        // try {
+        await db.collection('collections').doc(_id).remove()
+        commit(DELETE_COL, {_id})
+        // } catch (e) {
+        //     console.warn(e)
+        // }
     }
 }
 

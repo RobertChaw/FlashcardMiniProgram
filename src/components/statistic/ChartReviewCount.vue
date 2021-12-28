@@ -70,7 +70,6 @@ function onInit(canvas, width, height) {
         arr[3] = {name: "简单", data: new Array(30).fill(0, 0, 30)}
 
         lastMonthLog.value.forEach((day, nowDiff) => {
-            // console.log(day)
             day.forEach((item) => {
                 switch (item.quality) {
                     case '0':

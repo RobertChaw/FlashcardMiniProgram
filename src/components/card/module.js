@@ -1,4 +1,4 @@
-export const REQUEST_CARD_LIST_ASYNC = 'REQUEST_CARD_LIST'
+export const REQUEST_CARD_LIST_ASYNC = 'REQUEST_CARD_LIST_ASYNC'
 export const UPDATE_CARD_LIST = 'UPDATE_CARD_LIST'
 export const REVIEW_CARD_ASYNC = 'REVIEW_CARD_ASYNC'
 export const UPDATE_CARD_ASYNC = 'UPDATE_CARD_ASYNC'
@@ -23,16 +23,16 @@ const state = {
 const getters = {}
 const actions = {
     async [REQUEST_CARD_LIST_ASYNC]({commit}) {
-        try {
-            const {result} = await wx.cloud.callFunction({
-                name: 'queryCardList'
-            })
-            const cardList = result.cardList
-            console.log(result)
-            commit(UPDATE_CARD_LIST, cardList)
-        } catch (e) {
-            console.warn(e)
-        }
+        // try {
+        const {result} = await wx.cloud.callFunction({
+            name: 'queryCardList'
+        })
+        const cardList = result.cardList
+        console.log(result)
+        commit(UPDATE_CARD_LIST, cardList)
+        // } catch (e) {
+        //     console.warn(e)
+        // }
     },
     async [REVIEW_CARD_ASYNC]({commit, dispatch}, {quality, card}) {
         //更新卡片
@@ -69,14 +69,14 @@ const actions = {
         const cloneCard = {...card}
         delete cloneCard._id
 
-        try {
-            await db.collection('cards').doc(card._id).update({
-                data: cloneCard
-            })
-            commit(UPDATE_CARD, card)
-        } catch (e) {
-            console.warn(e)
-        }
+        // try {
+        await db.collection('cards').doc(card._id).update({
+            data: cloneCard
+        })
+        commit(UPDATE_CARD, card)
+        // } catch (e) {
+        //     console.warn(e)
+        // }
     },
     async [INSERT_CARD_ASYNC]({commit}, {card}) {
         //为卡片添加默认字段
@@ -89,23 +89,23 @@ const actions = {
             due: util.now(),
             usn: util.now(),
         }
-        try {
-            const {_id} = await db.collection('cards').add({
-                data: card,
-            })
-            card._id = _id
-            commit(INSERT_CARD, card)
-        } catch (e) {
-            console.warn(e)
-        }
+        // try {
+        const {_id} = await db.collection('cards').add({
+            data: card,
+        })
+        card._id = _id
+        commit(INSERT_CARD, card)
+        // } catch (e) {
+        //     console.warn(e)
+        // }
     },
     async [DELETE_CARD_ASYNC]({commit}, {_id}) {
-        try {
-            await db.collection('cards').doc(_id).remove()
-            commit(DELETE_CARD, {_id})
-        } catch (e) {
-            console.warn(e)
-        }
+        // try {
+        await db.collection('cards').doc(_id).remove()
+        commit(DELETE_CARD, {_id})
+        // } catch (e) {
+        //     console.warn(e)
+        // }
     },
 }
 const mutations = {

@@ -16,6 +16,7 @@ import {Tabs, TabPane} from '@nutui/nutui-taro';
 import {Notify} from '@nutui/nutui-taro';
 import {Form, FormItem} from '@nutui/nutui-taro';
 import {SearchBar} from '@nutui/nutui-taro';
+import {ActionSheet, Popup} from '@nutui/nutui-taro';
 import store from "./store/store";
 
 import '@nutui/nutui-taro/dist/style.css';
@@ -56,5 +57,6 @@ App.use(Button).use(Toast)
     .use(Notify)
     .use(Form).use(FormItem)
     .use(SearchBar)
+    .use(ActionSheet).use(Popup)
 
 export default App

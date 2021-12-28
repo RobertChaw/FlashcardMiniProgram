@@ -40,7 +40,6 @@ const selectedIndex = ref(0)
 const searchValue = ref('')
 
 const options = computed(() => {
-    console.log(store.state)
     const collectionList = store.state.collection.colItems
     return collectionList.map(({usn, name, _id}, index) => {
         return {text: name, value: index, _id}
@@ -54,7 +53,7 @@ const cards = computed(() => {
     const filteredCardList = cardList.filter(card => {
         if (card.collection_id != selectedId)
             return false
-        console.log(card)
+
         return card.question.includes(keyword) || card.answer.includes(keyword)
     })
     return filteredCardList

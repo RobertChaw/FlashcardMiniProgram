@@ -18,7 +18,6 @@ const store = useStore()
 const selected = ref(0)
 
 const options = computed(() => {
-    console.log(store.state)
     const collectionList = store.state.collection.colItems
     return collectionList.map(({usn, name, _id}, index) => {
         return {text: name, value: index, _id}

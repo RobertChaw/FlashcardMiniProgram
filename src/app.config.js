@@ -18,7 +18,7 @@ export default {
     window: {
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#fff',
-        navigationBarTitleText: 'WeChat',
+        navigationBarTitleText: 'Flashcard',
         navigationBarTextStyle: 'black'
     },
     "tabBar": {

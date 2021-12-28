@@ -10,26 +10,26 @@ const state = {
 const getters = {}
 const actions = {
     async [REQUEST_REVLOG_LIST_ASYNC]({commit}) {
-        try {
-            const {result} = await wx.cloud.callFunction({
-                name: 'queryRevLogList'
-            })
-            const revLogList = result.revLogList
-            commit(UPDATE_REVLOG_LIST, revLogList)
-        } catch (e) {
-            console.warn(e)
-        }
+        // try {
+        const {result} = await wx.cloud.callFunction({
+            name: 'queryRevLogList'
+        })
+        const revLogList = result.revLogList
+        commit(UPDATE_REVLOG_LIST, revLogList)
+        // } catch (e) {
+        //     console.warn(e)
+        // }
     },
     async [INSERT_REVLOG_ASYNC]({commit}, log) {
-        try {
-            const {_id} = await db.collection('rev_logs').add({
-                data: log,
-            })
-            log._id = _id
-            commit(INSERT_REVLOG, log)
-        } catch (e) {
-            console.warn(e)
-        }
+        // try {
+        const {_id} = await db.collection('rev_logs').add({
+            data: log,
+        })
+        log._id = _id
+        commit(INSERT_REVLOG, log)
+        // } catch (e) {
+        //     console.warn(e)
+        // }
     }
 }
 const mutations = {

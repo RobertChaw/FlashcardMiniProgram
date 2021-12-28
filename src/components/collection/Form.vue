@@ -1,6 +1,6 @@
 <template>
-    <nut-form>
-        <nut-form-item label="记忆库名称">
+    <nut-form :model-value="form" ref="ruleForm">
+        <nut-form-item label="记忆库名称" prop="name" required :rules="[{ required: true, message: '请填写名称' }]">
             <input class="nut-input-text" placeholder="请输入名称" type="text" v-model="form.name"/>
         </nut-form-item>
         <nut-cell>
@@ -22,18 +22,26 @@ const props = defineProps({
     collection: Object
 })
 
+const ruleForm = ref(null)
 const form = reactive({...props.collection})
 
+
 function submit() {
-    switch (props.type) {
-        case 'insert':
-            store.dispatch(INSERT_COL_ASYNC, form)
-            break
-        case 'update':
-            store.dispatch(UPDATE_COL_ASYNC, form)
-            break
-    }
-    Taro.navigateBack({detail: 1})
+    ruleForm.value.validate().then(({valid, errors}) => {
+        if (valid) {
+            switch (props.type) {
+                case 'insert':
+                    store.dispatch(INSERT_COL_ASYNC, form)
+                    break
+                case 'update':
+                    store.dispatch(UPDATE_COL_ASYNC, form)
+                    break
+            }
+            Taro.navigateBack({detail: 1})
+        } else {
+            console.log('error submit!!', errors);
+        }
+    })
 }
 </script>
 

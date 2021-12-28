@@ -63,8 +63,6 @@ const dueCardList = computed(() => {
         return list
     }, [])
 
-    console.log(filteredList)
-
     const sortedList = filteredList.sort((a, b) => {
         return b.usn - a.usn
         }
